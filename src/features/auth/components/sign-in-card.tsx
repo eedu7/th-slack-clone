@@ -7,6 +7,7 @@ import {FcGoogle} from "react-icons/fc";
 import {FaGithub} from "react-icons/fa";
 import {SignInFlow} from "@/features/auth/types";
 import {useState} from "react";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 interface SignInCardProps {
     setState: (state: SignInFlow) => void;
@@ -14,8 +15,17 @@ interface SignInCardProps {
 
 export const SignInCard = ({setState}: SignInCardProps) => {
 
+    const { signIn } = useAuthActions();
+
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const handleProviderSignIn = (value: "github" | "google") => {
+        signIn(value);
+    }
+
+
 
     return (
         <Card className="w-full h-full p-8">
@@ -50,8 +60,8 @@ export const SignInCard = ({setState}: SignInCardProps) => {
                 </form>
                 <Separator/>
                 <div className="flex flex-col gap-y-2.5">
-                    <Button disabled={false} onClick={() => {}} variant="outline" size="lg" className="w-full relative"><FcGoogle className="size-5 absolute left-3 top-2.5" /> Continue with Google</Button>
-                    <Button disabled={false} onClick={() => {}} variant="outline" size="lg" className="w-full relative"><FaGithub className="size-5 absolute left-3 top-2.5" /> Continue with Github</Button>
+                    <Button disabled={false} onClick={() => handleProviderSignIn("google")} variant="outline" size="lg" className="w-full relative"><FcGoogle className="size-5 absolute left-3 top-2.5" /> Continue with Google</Button>
+                    <Button disabled={false} onClick={() => handleProviderSignIn("github")} variant="outline" size="lg" className="w-full relative"><FaGithub className="size-5 absolute left-3 top-2.5" /> Continue with Github</Button>
                 </div>
                 <p className="text-xs text-muted-foreground">Don&apos;t have an account? <span onClick={() => setState("signUp")} className="text-sky-700 hover:underline cursor-pointer">Sign up</span></p>
             </CardContent>
